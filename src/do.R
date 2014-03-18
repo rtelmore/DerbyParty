@@ -14,4 +14,6 @@ bets.df <- data.frame(bettor = LETTERS[1:10],
 
 results <- c("a", "b", "e")
 
-                      
+total.pool <- sum(bets.df$amount)   
+total.win <- sum(bets.df$amount[bets.df$horse == results[1]])
+total.place <-              
