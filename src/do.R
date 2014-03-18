@@ -7,4 +7,11 @@
 ## Dependencies:
 source(paste(.project.path, "src/load.R", sep=""))
 
+set.seed(298)
+bets.df <- data.frame(bettor = LETTERS[1:10], 
+                      amount = sample(c(1, 5), size = 10, rep = T),
+                      horse = sample(letters[1:5], size = 10, rep = T))
 
+results <- c("a", "b", "e")
+
+                      
