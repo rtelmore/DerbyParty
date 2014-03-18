@@ -9,10 +9,12 @@ FinalPayout <- function(results, bet.df){
 
 FinalOdds <- function(bet.df){
   horses <- unique(bets.df$horse)
-  odds <- 1:length(horses)
-  for (horse in odds){
-    odds[horse] <- sum(bets.df$amount[bets.df$horse == horses[horse]])
+  bet <- 1:length(horses)
+  for (horse in bet){
+    bet[horse] <- sum(bets.df$amount[bets.df$horse == horses[horse]])
   }
-  odds <- data.frame(horse = horses, odds = odds)
+  odds <- data.frame(horse = horses, amount.bet = bet, 
+                     odds = (sum(bets.df$amount) - bet)/bet)
   return(odds)
 }
+
