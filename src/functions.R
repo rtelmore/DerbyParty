@@ -2,10 +2,19 @@
 ## Date: 18 Mar 2014
 ## Include project-specific functions in this file
 
-FinalPayout <- function(results, bet.df){
-  total.win.pool <- sum(bet.df$amount)
-  
+FinalPayout <- function(bet.df, odds, results){
+  kBets <- length(bet.df$horse)
+  win.payouts <- rep(0, kBets)
+  for (i in 1:kBets) {
+    if(bet.df$horse[i] == results[1]) {
+      win.payouts[i] <- bet.df$amount[i]*odds$odds[odds$horse == results[1]] +
+                        bet.df$amount[i]
+    }
+  }
+  bet.df$payouts <- win.payouts
+  return(bet.df)
 }
+
 
 FinalOdds <- function(bet.df){
   horses <- unique(bets.df$horse)
@@ -17,4 +26,3 @@ FinalOdds <- function(bet.df){
                      odds = (sum(bets.df$amount) - bet)/bet)
   return(odds)
 }
-
