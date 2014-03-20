@@ -3,6 +3,24 @@
 ## Include project-specific functions in this file
 
 FinalPayout <- function(bet.df, bet.type = "win", results){
+  bet.df <- bet.df[bet.df$type == bet.type, ]
+  kBets <- length(bet.df$horse)
+  bet.types <- 1:3
+  names(bet.types) <- c("win", "place", "show")
+  kFactor <- bet.types[bet.type]
+  odds <- FinalOdds(bet.df, kFactor = kFactor)
+  win.payouts <- rep(0, kBets)
+  for (i in 1:kBets) {
+    if(bet.df$horse[i] %in% results[1:kFactor]) {
+      multiplier <- odds$odds[odds$horses == bet.df$horse[i]]
+      win.payouts[i] <- bet.df$amount[i]*(multiplier + 1)
+    }
+  }
+  bet.df$payouts <- win.payouts
+  return(bet.df)
+}
+
+FinalPayoutOld <- function(bet.df, bet.type = "win", results){
   kBets <- length(bet.df$horse)
   bet.types <- 1:3
   names(bet.types) <- c("win", "place", "show")
