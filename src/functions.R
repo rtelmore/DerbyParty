@@ -38,6 +38,20 @@ FinalPayoutOld <- function(bet.df, bet.type = "win", results){
   return(bet.df)
 }
 
+FinalPayoutAll <- function(bet.df, results){
+  kBets <- length(bet.df$horse)
+  odds <- FinalOdds(bet.df, kFactor = 3)
+  win.payouts <- rep(0, kBets)
+  for (i in 1:kBets) {
+    if(bet.df$horse[i] %in% results[1:3]) {
+      multiplier <- odds$odds[odds$horses == bet.df$horse[i]]
+      win.payouts[i] <- bet.df$amount[i]*(multiplier + 1)
+    }
+  }
+  bet.df$payouts <- win.payouts
+  return(bet.df)
+}
+
 FinalOdds <- function(bet.df, kFactor){
   horses <- unique(bets.df$horse)
   bet <- 1:length(horses)
