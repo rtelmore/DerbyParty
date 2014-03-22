@@ -62,3 +62,14 @@ FinalOdds <- function(bet.df, kFactor){
   return(data.frame(horses = horses, total = bet, odds = odds))
 }
 
+FinalOddsByHorse <- function(bet.df, horse, kFactor){
+  total.amount.bet <- sum(bet.df$amount)
+  horses <- unique(bets.df$horse)
+  bet <- 1:length(horses)
+  for (horse in bet){
+    bet[horse] <- sum(bets.df$amount[bets.df$horse == horses[horse]])
+  }
+  odds <- (sum(bets.df$amount)/kFactor - bet)/bet
+  return(data.frame(horses = horses, total = bet, odds = odds))
+}
+
