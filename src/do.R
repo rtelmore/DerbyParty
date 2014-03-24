@@ -28,4 +28,13 @@ tt <- bets.df[bets.df$type == "win", ]
 
 total.pool <- sum(bets.df$amount)   
 total.win <- sum(bets.df$amount[bets.df$horse == results[1]])
-total.place <-              
+
+set.seed(13983)
+kBets <- 20
+bets.df <- data.frame(bettor = sample(c(letters, LETTERS), 
+                                      size = kBets, 
+                                      rep = F), 
+                      amount = sample(c(10, 20), size = kBets, rep = T),
+                      horse = sample(letters[1:5], size = kBets, rep = T))
+                      
+results <- c("a", "b", "e")

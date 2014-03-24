@@ -38,13 +38,14 @@ FinalPayoutOld <- function(bet.df, bet.type = "win", results){
   return(bet.df)
 }
 
-FinalPayoutAll <- function(bet.df, results){
+FinalPayout <- function(bet.df, results){
   kBets <- length(bet.df$horse)
-  odds <- FinalOdds(bet.df, kFactor = 3)
+  mult <- FinalMultiplier(bet.df, kFactor = length(results))
+  print(mult)
   win.payouts <- rep(0, kBets)
   for (i in 1:kBets) {
-    if(bet.df$horse[i] %in% results[1:3]) {
-      multiplier <- odds$odds[odds$horses == bet.df$horse[i]]
+    if(bet.df$horse[i] %in% results) {
+      multiplier <- mult$mult[mult$horses == bet.df$horse[i]]
       win.payouts[i] <- bet.df$amount[i]*(multiplier + 1)
     }
   }
@@ -52,24 +53,20 @@ FinalPayoutAll <- function(bet.df, results){
   return(bet.df)
 }
 
-FinalOdds <- function(bet.df, kFactor){
-  horses <- unique(bets.df$horse)
+FinalMultiplier <- function(bet.df, kFactor){
+  horses <- unique(bet.df$horse)
   bet <- 1:length(horses)
+  ## amount bet per horse
   for (horse in bet){
-    bet[horse] <- sum(bets.df$amount[bets.df$horse == horses[horse]])
+    bet[horse] <- sum(bet.df$amount[bet.df$horse == horses[horse]])
   }
-  odds <- (sum(bets.df$amount)/kFactor - bet)/bet
-  return(data.frame(horses = horses, total = bet, odds = odds))
+  mult <- (sum(bet.df$amount)/kFactor - bet)/bet
+  return(data.frame(horses = horses, total = bet, multiplier = mult))
 }
 
-FinalOddsByHorse <- function(bet.df, horse, kFactor){
-  total.amount.bet <- sum(bet.df$amount)
-  horses <- unique(bets.df$horse)
-  bet <- 1:length(horses)
-  for (horse in bet){
-    bet[horse] <- sum(bets.df$amount[bets.df$horse == horses[horse]])
-  }
-  odds <- (sum(bets.df$amount)/kFactor - bet)/bet
-  return(data.frame(horses = horses, total = bet, odds = odds))
+AllPayouts <- function(bet.df, results){
+  win <- FinalPayout(bet.df[bet.df$type == 'win', ], results[1])
+  place <- FinalPayout(bet.df[bet.df$type == 'place', ], results[1:2])
+  show <- FinalPayout(bet.df[bet.df$type == 'show', ], results[1:3])
+  return(list(win = win, place = place, show = show))
 }
-
