@@ -17,7 +17,19 @@ bets.df <- data.frame(bettor = sample(c(letters, LETTERS),
                       type = sample(c("win", "place", "show"), 
                                     size = kBets, rep = T))
 
-results <- c("a", "b", "e")
+results <- sample(letters[1:5], size = 3)
+results
+ss <- AllPayouts(bets.df, results)
+sum(ss$win$amount)
+sum(ss$win$payout)
+sum(ss$place$amount)
+sum(ss$place$payout)
+sum(ss$show$payout)
+sum(ss$show$amount)
+aggregate(ss$win[, c(2, 5)], by = list(ss$win$horse), FUN = sum)
+aggregate(ss$place[, c(2, 5)], by = list(ss$place$horse), FUN = sum)
+aggregate(ss$show[, c(2, 5)], by = list(ss$show$horse), FUN = sum)
+
 bets <- bets.df[bets.df$type == "win", ]
 ss <- FinalPayoutOld(bets, bet.type = "win", results)
 
