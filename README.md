@@ -1,9 +1,12 @@
 Derby Party Betting App
 ==========
 
-Making the KY Derby Party more exciting with betting!
+## Making the KY Derby Party more exciting with betting!
 
-Howto:
+## Notes:
+* I'd suggest just taking all "show" bets unless you have a really big party.
+
+### Howto:
 
 ```R
 source("functions.R")
